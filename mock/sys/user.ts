@@ -74,7 +74,7 @@ export default [
     response: (request: requestParams) => {
       const token = getRequestToken(request);
       if (!token) return resultError('Invalid token');
-      const checkUser = createFakeUserList().find((item) => item.token === token);
+      const checkUser = createFakeUserList()[0];
       if (!checkUser) {
         return resultError('The corresponding user information was not obtained!');
       }

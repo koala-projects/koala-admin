@@ -23,6 +23,10 @@ const globSetting = useGlobSetting();
 const urlPrefix = globSetting.urlPrefix;
 const { createMessage, createErrorModal } = useMessage();
 
+function isOAuth2Request(apiUrl: string | undefined): boolean {
+  return apiUrl === '/oauth2';
+}
+
 /**
  * @description: 数据处理，方便区分多种处理方式
  */
@@ -32,7 +36,7 @@ const transform: AxiosTransform = {
    */
   transformResponseHook: (res: AxiosResponse<Result>, options: RequestOptions) => {
     const { t } = useI18n();
-    const { isTransformResponse, isReturnNativeResponse } = options;
+    const { isTransformResponse, isReturnNativeResponse, apiUrl } = options;
     // 是否返回原生响应头 比如：需要获取响应头时使用该属性
     if (isReturnNativeResponse) {
       return res;
@@ -49,6 +53,11 @@ const transform: AxiosTransform = {
       // return '[HTTP] Request has no return value';
       throw new Error(t('sys.api.apiRequestFailed'));
     }
+
+    if (isOAuth2Request(apiUrl)) {
+      return result;
+    }
+
     //  这里 code，result，message为 后台统一的字段，需要在 types.ts内修改为项目自己的接口返回格式
     const { code, data, message } = result;
 
@@ -260,6 +269,11 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
   );
 }
 export const defHttp = createAxios();
+export const oauth2Http = createAxios({
+  requestOptions: {
+    apiUrl: '/oauth2',
+  },
+});
 
 // other api url
 // export const otherHttp = createAxios({
