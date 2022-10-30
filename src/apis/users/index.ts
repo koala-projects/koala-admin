@@ -1,3 +1,3 @@
-import { UserEntity } from './models/UserEntity';
+import type { UserEntity } from './models/UserEntity';
 
 export { UserEntity };

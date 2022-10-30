@@ -1,7 +1,7 @@
 import { defHttp } from '/@/utils/http/axios';
 
-import { GrantedAuthority } from './models/GrantedAuthority';
-import { UserDetailsEntity } from './models/UserDetailsEntity';
+import type { GrantedAuthority } from './models/GrantedAuthority';
+import type { UserDetailsEntity } from './models/UserDetailsEntity';
 
 enum URL {
   userinfo = '/userinfo',
