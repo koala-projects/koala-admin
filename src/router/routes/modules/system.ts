@@ -9,7 +9,7 @@ const system: AppRouteModule = {
   component: LAYOUT,
   redirect: '/system/account',
   meta: {
-    orderNo: 2000,
+    orderNo: 1,
     icon: 'ion:settings-outline',
     title: t('routes.demo.system.moduleName'),
   },
@@ -71,6 +71,16 @@ const system: AppRouteModule = {
         ignoreKeepAlive: true,
       },
       component: () => import('/@/views/demo/system/password/index.vue'),
+    },
+    {
+      path: 'dictionary',
+      name: 'Dictionary',
+      meta: {
+        title: t('routes.system.dictionary'),
+        ignoreKeepAlive: true,
+        permissions: ['dictionary:read', 'dictionary:write'],
+      },
+      component: () => import('/@/views/system/dictionary/index.vue'),
     },
   ],
 };
