@@ -1,30 +1,30 @@
-import type { UserInfo } from '/#/store';
 import type { ErrorMessageMode } from '/#/axios';
 import { defineStore } from 'pinia';
 import { store } from '/@/store';
 import { RoleEnum } from '/@/enums/roleEnum';
 import { PageEnum } from '/@/enums/pageEnum';
-import { ROLES_KEY, TOKEN_KEY, USER_INFO_KEY } from '/@/enums/cacheEnum';
+import { ROLES_KEY, TOKEN_KEY, USER_INFO_KEY, AUTHORITIES_KEY } from '/@/enums/cacheEnum';
 import { getAuthCache, setAuthCache } from '/@/utils/auth';
-import { GetUserInfoModel, LoginParams } from '/@/api/sys/model/userModel';
-import { doLogout, getUserInfo } from '/@/api/sys/user';
+import { LoginParams } from '/@/api/sys/model/userModel';
+import { doLogout } from '/@/api/sys/user';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { router } from '/@/router';
 import { usePermissionStore } from '/@/store/modules/permission';
 import { RouteRecordRaw } from 'vue-router';
 import { PAGE_NOT_FOUND_ROUTE } from '/@/router/routes/basic';
-import { isArray } from '/@/utils/is';
 import { h } from 'vue';
 
 import { loginByPassowrd } from '/@/apis/oauth2';
+import { getUserinfo, UserDetailsEntity } from '/@/apis/userinfo';
 
 interface UserState {
-  userInfo: Nullable<UserInfo>;
+  userInfo: Nullable<UserDetailsEntity>;
   token?: string;
   roleList: RoleEnum[];
   sessionTimeout?: boolean;
   lastUpdateTime: number;
+  authorities: string[];
 }
 
 export const useUserStore = defineStore({
@@ -40,10 +40,11 @@ export const useUserStore = defineStore({
     sessionTimeout: false,
     // Last fetch time
     lastUpdateTime: 0,
+    authorities: [],
   }),
   getters: {
-    getUserInfo(): UserInfo {
-      return this.userInfo || getAuthCache<UserInfo>(USER_INFO_KEY) || {};
+    getUserInfo(): UserDetailsEntity {
+      return this.userInfo || getAuthCache<UserDetailsEntity>(USER_INFO_KEY) || {};
     },
     getToken(): string {
       return this.token || getAuthCache<string>(TOKEN_KEY);
@@ -57,6 +58,11 @@ export const useUserStore = defineStore({
     getLastUpdateTime(): number {
       return this.lastUpdateTime;
     },
+    getAuthorities(): string[] {
+      return this.authorities.length > 0
+        ? this.authorities
+        : getAuthCache<string[]>(AUTHORITIES_KEY);
+    },
   },
   actions: {
     setToken(info: string | undefined) {
@@ -67,7 +73,7 @@ export const useUserStore = defineStore({
       this.roleList = roleList;
       setAuthCache(ROLES_KEY, roleList);
     },
-    setUserInfo(info: UserInfo | null) {
+    setUserInfo(info: UserDetailsEntity | null) {
       this.userInfo = info;
       this.lastUpdateTime = new Date().getTime();
       setAuthCache(USER_INFO_KEY, info);
@@ -75,10 +81,15 @@ export const useUserStore = defineStore({
     setSessionTimeout(flag: boolean) {
       this.sessionTimeout = flag;
     },
+    setAuthorities(authorities: string[]) {
+      this.authorities = authorities;
+      setAuthCache(AUTHORITIES_KEY, authorities);
+    },
     resetState() {
       this.userInfo = null;
       this.token = '';
       this.roleList = [];
+      this.authorities = [];
       this.sessionTimeout = false;
     },
     /**
@@ -89,7 +100,7 @@ export const useUserStore = defineStore({
         goHome?: boolean;
         mode?: ErrorMessageMode;
       },
-    ): Promise<GetUserInfoModel | null> {
+    ): Promise<UserDetailsEntity | null> {
       try {
         const { goHome = true, ...loginParams } = params;
         const data = await loginByPassowrd(loginParams);
@@ -99,7 +110,7 @@ export const useUserStore = defineStore({
         return Promise.reject(error);
       }
     },
-    async afterLoginAction(goHome?: boolean): Promise<GetUserInfoModel | null> {
+    async afterLoginAction(goHome?: boolean): Promise<UserDetailsEntity | null> {
       if (!this.getToken) return null;
       // get user info
       const userInfo = await this.getUserInfoAction();
@@ -121,19 +132,13 @@ export const useUserStore = defineStore({
       }
       return userInfo;
     },
-    async getUserInfoAction(): Promise<UserInfo | null> {
+    async getUserInfoAction(): Promise<UserDetailsEntity | null> {
       if (!this.getToken) return null;
-      const userInfo = await getUserInfo();
-      const { roles = [] } = userInfo;
-      if (isArray(roles)) {
-        const roleList = roles.map((item) => item.value) as RoleEnum[];
-        this.setRoleList(roleList);
-      } else {
-        userInfo.roles = [];
-        this.setRoleList([]);
-      }
-      this.setUserInfo(userInfo);
-      return userInfo;
+      const userinfo = await getUserinfo();
+      this.setUserInfo(userinfo);
+      const { authorities = [] } = userinfo;
+      this.setAuthorities(authorities.map((authority) => authority.authority));
+      return userinfo;
     },
     /**
      * @description: logout
