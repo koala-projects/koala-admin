@@ -3,4 +3,5 @@ import { GrantedAuthority } from './GrantedAuthority';
 
 export interface UserDetailsEntity extends UserEntity {
   authorities: GrantedAuthority[];
+  homePath?: string;
 }

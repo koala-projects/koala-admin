@@ -7,7 +7,7 @@ enum URL {
   userinfo = '/userinfo',
 }
 
-export function getUserInfo() {
+export function getUserinfo() {
   return defHttp.get<UserDetailsEntity>({ url: URL.userinfo });
 }
 
