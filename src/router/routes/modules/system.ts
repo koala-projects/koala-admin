@@ -55,15 +55,6 @@ const system: AppRouteModule = {
       component: () => import('/@/views/demo/system/menu/index.vue'),
     },
     {
-      path: 'dept',
-      name: 'DeptManagement',
-      meta: {
-        title: t('routes.demo.system.dept'),
-        ignoreKeepAlive: true,
-      },
-      component: () => import('/@/views/demo/system/dept/index.vue'),
-    },
-    {
       path: 'changePassword',
       name: 'ChangePassword',
       meta: {
@@ -71,6 +62,15 @@ const system: AppRouteModule = {
         ignoreKeepAlive: true,
       },
       component: () => import('/@/views/demo/system/password/index.vue'),
+    },
+    {
+      path: 'department',
+      name: 'Department',
+      meta: {
+        title: t('routes.demo.system.dept'),
+        ignoreKeepAlive: true,
+      },
+      component: () => import('/@/views/system/department/index.vue'),
     },
     {
       path: 'dictionary',
