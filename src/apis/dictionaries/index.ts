@@ -3,15 +3,29 @@ import { defHttp } from '/@/utils/http/axios';
 import type { SearchParameters, PageResult } from '/@/apis/models';
 import type { DictionaryEntity } from './models/DictionaryEntity';
 
-enum URL {
-  list = '/dictionaries',
-}
+const domain = '/dictionaries';
 
 export function listDictionaries(params: SearchParameters) {
   return defHttp.get<PageResult<DictionaryEntity>>(
-    { url: URL.list, params },
+    { url: domain, params },
     { joinParamsToUrl: true },
   );
+}
+
+export function loadDictionary(id: string) {
+  return defHttp.get<DictionaryEntity>({ url: `${domain}/${id}` });
+}
+
+export function createDictionary(data: DictionaryEntity) {
+  return defHttp.post<DictionaryEntity>({ url: domain, data });
+}
+
+export function updateDictionary(id: string, data: DictionaryEntity) {
+  return defHttp.put<null>({ url: `${domain}/${id}`, data });
+}
+
+export function deleteDictionary(id: string) {
+  return defHttp.delete<null>({ url: `${domain}/${id}` });
 }
 
 export { DictionaryEntity };
