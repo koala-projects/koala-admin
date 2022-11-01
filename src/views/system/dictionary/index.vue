@@ -12,6 +12,7 @@
   import { listDictionaries, deleteDictionary } from '/@/apis/dictionaries';
 
   const [register, { reload }] = useTable({
+    title: '字典列表',
     columns: columns,
     actionColumn: {
       width: 120,
@@ -22,6 +23,7 @@
     api: listDictionaries,
     showIndexColumn: false,
     bordered: true,
+    showTableSetting: true,
     canResize: false,
     useSearchForm: true,
     formConfig: {

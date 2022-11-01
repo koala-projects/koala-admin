@@ -32,6 +32,7 @@
   const [registerModal, { openModal }] = useModal();
 
   const [registerTable, { reload }] = useTable({
+    title: '字典项列表',
     columns: columns,
     actionColumn: {
       width: 120,
@@ -44,6 +45,7 @@
     },
     showIndexColumn: false,
     bordered: true,
+    showTableSetting: true,
     canResize: false,
     useSearchForm: true,
     formConfig: {
