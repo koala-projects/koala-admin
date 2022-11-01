@@ -2,26 +2,17 @@
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
 
   import { useModal } from '/@/components/Modal';
+  import { useDrawer } from '/@/components/Drawer';
 
   import DictionaryModal from './DictionaryModal.vue';
+  import DictionaryItemDrawer from './DictionaryItemDrawer.vue';
+
+  import { columns, searchFormSchema } from './dictionary.data';
 
   import { listDictionaries, deleteDictionary } from '/@/apis/dictionaries';
 
   const [register, { reload }] = useTable({
-    columns: [
-      {
-        title: '字典名称',
-        dataIndex: 'name',
-      },
-      {
-        title: '字典代码',
-        dataIndex: 'code',
-      },
-      {
-        title: '字典描述',
-        dataIndex: 'description',
-      },
-    ],
+    columns: columns,
     actionColumn: {
       width: 120,
       title: '操作',
@@ -35,29 +26,11 @@
     useSearchForm: true,
     formConfig: {
       labelWidth: 100,
-      schemas: [
-        {
-          field: `name`,
-          label: `字典名称`,
-          component: 'Input',
-          colProps: {
-            xl: 12,
-            xxl: 8,
-          },
-        },
-        {
-          field: `code`,
-          label: `字典代码`,
-          component: 'Input',
-          colProps: {
-            xl: 12,
-            xxl: 8,
-          },
-        },
-      ],
+      schemas: searchFormSchema,
     },
   });
   const [registerModal, { openModal }] = useModal();
+  const [registerDrawer, { openDrawer }] = useDrawer();
 
   function handleCreate() {
     openModal(true, {
@@ -73,7 +46,7 @@
   }
 
   function handleSetting(record: Recordable) {
-    console.log('设置字典项', record);
+    openDrawer(true, record);
   }
 
   async function handleDelete(record: Recordable) {
@@ -118,5 +91,6 @@
       </template>
     </basic-table>
     <dictionary-modal @register="registerModal" @success="handleSuccess" />
+    <dictionary-item-drawer @register="registerDrawer" />
   </div>
 </template>

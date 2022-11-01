@@ -4,40 +4,19 @@
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form/index';
 
+  import { formSchema } from './dictionary.data';
+
   import { createDictionary, updateDictionary } from '/@/apis/dictionaries';
 
   const isUpdate = ref(false);
+  const id = ref<string | null>(null);
 
   const getTitle = computed(() => (!unref(isUpdate) ? '新增字典' : '编辑字典'));
 
   const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
     labelWidth: 100,
     baseColProps: { span: 24 },
-    schemas: [
-      {
-        field: 'id',
-        label: '字典ID',
-        component: 'Input',
-        show: false,
-      },
-      {
-        field: 'name',
-        label: '字典名称',
-        component: 'Input',
-        required: true,
-      },
-      {
-        field: 'code',
-        label: '字典代码',
-        component: 'Input',
-        required: true,
-      },
-      {
-        field: 'description',
-        label: '字典描述',
-        component: 'InputTextArea',
-      },
-    ],
+    schemas: formSchema,
     showActionButtonGroup: false,
   });
 
@@ -47,6 +26,7 @@
     isUpdate.value = !!data?.isUpdate;
 
     if (unref(isUpdate)) {
+      id.value = data.record.id;
       setFieldsValue({
         ...data.record,
       });
@@ -61,7 +41,7 @@
       setModalProps({ confirmLoading: true });
       // TODO custom api
       if (unref(isUpdate)) {
-        await updateDictionary(values.id, values);
+        await updateDictionary(unref(id)!, values);
       } else {
         await createDictionary(values);
       }
