@@ -36,16 +36,6 @@ const system: AppRouteModule = {
       component: () => import('/@/views/demo/system/account/AccountDetail.vue'),
     },
     {
-      path: 'role',
-      name: 'RoleManagement',
-      meta: {
-        title: t('routes.demo.system.role'),
-        ignoreKeepAlive: true,
-      },
-      component: () => import('/@/views/demo/system/role/index.vue'),
-    },
-
-    {
       path: 'menu',
       name: 'MenuManagement',
       meta: {
@@ -64,11 +54,22 @@ const system: AppRouteModule = {
       component: () => import('/@/views/demo/system/password/index.vue'),
     },
     {
+      path: 'role',
+      name: 'Role',
+      meta: {
+        title: t('routes.demo.system.role'),
+        ignoreKeepAlive: true,
+        permissions: ['role:read', 'role:write'],
+      },
+      component: () => import('/@/views/system/role/index.vue'),
+    },
+    {
       path: 'department',
       name: 'Department',
       meta: {
         title: t('routes.demo.system.dept'),
         ignoreKeepAlive: true,
+        permissions: ['department:read', 'department:write'],
       },
       component: () => import('/@/views/system/department/index.vue'),
     },
