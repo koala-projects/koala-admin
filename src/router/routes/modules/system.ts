@@ -15,15 +15,6 @@ const system: AppRouteModule = {
   },
   children: [
     {
-      path: 'account',
-      name: 'AccountManagement',
-      meta: {
-        title: t('routes.demo.system.account'),
-        ignoreKeepAlive: false,
-      },
-      component: () => import('/@/views/demo/system/account/index.vue'),
-    },
-    {
       path: 'account_detail/:id',
       name: 'AccountDetail',
       meta: {
@@ -54,10 +45,19 @@ const system: AppRouteModule = {
       component: () => import('/@/views/demo/system/password/index.vue'),
     },
     {
+      path: 'user',
+      name: 'User',
+      meta: {
+        title: t('routes.system.user'),
+        ignoreKeepAlive: false,
+      },
+      component: () => import('/@/views/system/user/index.vue'),
+    },
+    {
       path: 'role',
       name: 'Role',
       meta: {
-        title: t('routes.demo.system.role'),
+        title: t('routes.system.role'),
         ignoreKeepAlive: true,
         permissions: ['role:read', 'role:write'],
       },
@@ -67,7 +67,7 @@ const system: AppRouteModule = {
       path: 'department',
       name: 'Department',
       meta: {
-        title: t('routes.demo.system.dept'),
+        title: t('routes.system.department'),
         ignoreKeepAlive: true,
         permissions: ['department:read', 'department:write'],
       },
