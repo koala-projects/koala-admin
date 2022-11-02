@@ -15,41 +15,12 @@ const system: AppRouteModule = {
   },
   children: [
     {
-      path: 'account_detail/:id',
-      name: 'AccountDetail',
-      meta: {
-        hideMenu: true,
-        title: t('routes.demo.system.account_detail'),
-        ignoreKeepAlive: true,
-        showMenu: false,
-        currentActiveMenu: '/system/account',
-      },
-      component: () => import('/@/views/demo/system/account/AccountDetail.vue'),
-    },
-    {
-      path: 'menu',
-      name: 'MenuManagement',
-      meta: {
-        title: t('routes.demo.system.menu'),
-        ignoreKeepAlive: true,
-      },
-      component: () => import('/@/views/demo/system/menu/index.vue'),
-    },
-    {
-      path: 'changePassword',
-      name: 'ChangePassword',
-      meta: {
-        title: t('routes.demo.system.password'),
-        ignoreKeepAlive: true,
-      },
-      component: () => import('/@/views/demo/system/password/index.vue'),
-    },
-    {
       path: 'user',
       name: 'User',
       meta: {
         title: t('routes.system.user'),
         ignoreKeepAlive: false,
+        permissions: ['user:read', 'user:write'],
       },
       component: () => import('/@/views/system/user/index.vue'),
     },

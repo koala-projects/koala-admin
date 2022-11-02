@@ -4,9 +4,12 @@
   import { PageWrapper } from '/@/components/Page';
   import { BasicTable, TableAction, useTable } from '/@/components/Table';
   import { useModal } from '/@/components/Modal';
+  import { useDrawer } from '/@/components/Drawer';
 
   import DepartmentTree from './DepartmentTree.vue';
   import UserModal from './UserModal.vue';
+  import UserDepartmentDrawer from './UserDepartmentDrawer.vue';
+  import UserRoleDrawer from './UserRoleDrawer.vue';
 
   import { columns, searchFormSchema } from './user.data';
 
@@ -20,6 +23,8 @@
   }
 
   const [registerModal, { openModal }] = useModal();
+  const [registerDepartmentDrawer, { openDrawer: openDepartmentDrawer }] = useDrawer();
+  const [registerRoleDrawer, { openDrawer: openRoleDrawer }] = useDrawer();
 
   const [registerTable, { reload }] = useTable({
     title: '账号列表',
@@ -58,6 +63,14 @@
     });
   }
 
+  function handleDepartmentSetting(record: Recordable) {
+    openDepartmentDrawer(true, record);
+  }
+
+  function handleRoleSetting(record: Recordable) {
+    openRoleDrawer(true, record);
+  }
+
   async function handleDelete(record: Recordable) {
     await deleteUser(record.id);
     reload();
@@ -84,6 +97,16 @@
                 onClick: handleEdit.bind(null, record),
               },
               {
+                icon: 'mingcute:department-line',
+                tooltip: '部门配置',
+                onClick: handleDepartmentSetting.bind(null, record),
+              },
+              {
+                icon: 'eos-icons:role-binding-outlined',
+                tooltip: '角色配置',
+                onClick: handleRoleSetting.bind(null, record),
+              },
+              {
                 icon: 'ant-design:delete-outlined',
                 color: 'error',
                 tooltip: '删除',
@@ -99,5 +122,7 @@
       </template>
     </basic-table>
     <user-modal @register="registerModal" @success="handleSuccess" />
+    <user-department-drawer @register="registerDepartmentDrawer" />
+    <user-role-drawer @register="registerRoleDrawer" />
   </page-wrapper>
 </template>

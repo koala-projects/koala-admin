@@ -4,20 +4,20 @@
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import { Row as ARow, Transfer } from 'ant-design-vue';
 
-  import { listPermissions, PermissionEntity } from '/@/apis/permissions';
-  import { listRolePermissionIds, setRolePermissionIds } from '/@/apis/roles';
+  import { listDepartments, DepartmentEntity } from '/@/apis/departments';
+  import { listUserDepartmentIds, setUserDepartmentIds } from '/@/apis/users';
 
-  const roleId = ref<Nullable<string>>(null);
-  const permissions = ref<PermissionEntity[]>([]);
+  const userId = ref<Nullable<string>>(null);
+  const permissions = ref<DepartmentEntity[]>([]);
   const targetKeys = ref<string[]>([]);
   const selectedKeys = ref<string[]>([]);
 
   const [registerDrawer, { changeLoading, changeOkLoading, closeDrawer }] = useDrawerInner(
     async (data) => {
       changeLoading(true);
-      roleId.value = data.id;
-      permissions.value = (await listPermissions({ page: 0, size: 9999 })).content || [];
-      targetKeys.value = (await listRolePermissionIds(data.id)) || [];
+      userId.value = data.id;
+      permissions.value = (await listDepartments({ page: 0, size: 9999 })).content || [];
+      targetKeys.value = (await listUserDepartmentIds(data.id)) || [];
       changeLoading(false);
     },
   );
@@ -27,7 +27,7 @@
   async function handleSubmit() {
     try {
       changeOkLoading(true);
-      await setRolePermissionIds(unref(roleId)!, unref(targetKeys));
+      await setUserDepartmentIds(unref(userId)!, unref(targetKeys));
       closeDrawer();
       emit('success');
     } finally {
@@ -41,7 +41,7 @@
       v-bind="$attrs"
       @register="registerDrawer"
       showFooter
-      title="角色配置"
+      title="部门配置"
       width="600px"
       @ok="handleSubmit"
     >
@@ -50,9 +50,9 @@
           v-model:target-keys="targetKeys"
           v-model:selected-keys="selectedKeys"
           :data-source="permissions"
-          :row-key="(permission: PermissionEntity) => permission.id"
-          :titles="['权限列表', '角色权限']"
-          :render="(permission: PermissionEntity) => permission.name"
+          :row-key="(permission: DepartmentEntity) => permission.id"
+          :titles="['部门列表', '用户部门']"
+          :render="(permission: DepartmentEntity) => permission.name"
           :list-style="{ height: '600px' }"
           show-search
         />

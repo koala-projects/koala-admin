@@ -25,4 +25,20 @@ export function deleteUser(id: string) {
   return defHttp.delete<null>({ url: `${domain}/${id}` });
 }
 
+export function listUserDepartmentIds(id: string) {
+  return defHttp.get<string[]>({ url: `${domain}/${id}/department-ids` });
+}
+
+export function setUserDepartmentIds(id: string, departmentIds: string[]) {
+  return defHttp.put<null>({ url: `${domain}/${id}/department-ids`, data: departmentIds });
+}
+
+export function listUserRoleIds(id: string) {
+  return defHttp.get<string[]>({ url: `${domain}/${id}/role-ids` });
+}
+
+export function setUserRoleIds(id: string, roleIds: string[]) {
+  return defHttp.put<null>({ url: `${domain}/${id}/role-ids`, data: roleIds });
+}
+
 export { UserEntity };
