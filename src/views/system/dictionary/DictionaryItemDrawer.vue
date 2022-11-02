@@ -84,7 +84,7 @@
       v-bind="$attrs"
       @register="registerDrawer"
       showFooter
-      title="字典设置"
+      title="字典配置"
       width="800px"
       @ok="handleSubmit"
     >
