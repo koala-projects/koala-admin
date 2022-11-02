@@ -29,7 +29,7 @@ export function deleteDepartment(id: string) {
 }
 
 export function listDepartmentTree() {
-  return defHttp.get<TreeNode<DepartmentEntity>>({ url: `${domain}/tree` });
+  return defHttp.get<TreeNode<DepartmentEntity>[]>({ url: `${domain}/tree` });
 }
 
 export { DepartmentEntity };
