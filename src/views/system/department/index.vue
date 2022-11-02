@@ -63,10 +63,12 @@
             :actions="[
               {
                 icon: 'clarity:note-edit-line',
+                tooltip: '编辑',
                 onClick: handleEdit.bind(null, record),
               },
               {
                 icon: 'ant-design:delete-outlined',
+                tooltip: '删除',
                 color: 'error',
                 popConfirm: {
                   title: '是否确认删除',

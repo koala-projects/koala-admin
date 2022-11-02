@@ -41,7 +41,7 @@
       v-bind="$attrs"
       @register="registerDrawer"
       showFooter
-      title="字典设置"
+      title="角色配置"
       width="600px"
       @ok="handleSubmit"
     >
