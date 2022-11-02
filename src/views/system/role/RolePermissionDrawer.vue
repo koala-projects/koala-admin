@@ -51,7 +51,7 @@
           v-model:selected-keys="selectedKeys"
           :data-source="permissions"
           :row-key="(permission: PermissionEntity) => permission.id"
-          :titles="['全部权限', '拥有权限']"
+          :titles="['权限列表', '拥有权限']"
           :render="(permission: PermissionEntity) => permission.name"
           :list-style="{ height: '600px' }"
           show-search
