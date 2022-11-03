@@ -25,6 +25,11 @@
           icon="ion:lock-closed-outline"
         />
         <MenuItem
+          key="changePassword"
+          :text="t('layout.header.dropdownItem.changePassword')"
+          icon="iconoir:password-cursor"
+        />
+        <MenuItem
           key="logout"
           :text="t('layout.header.dropdownItemLoginOut')"
           icon="ion:power-outline"
@@ -55,7 +60,10 @@
 
   import { createAsyncComponent } from '/@/utils/factory/createAsyncComponent';
 
-  type MenuEvent = 'logout' | 'doc' | 'lock';
+  import { useGo } from '/@/hooks/web/usePage';
+  import { PageEnum } from '/@/enums/pageEnum';
+
+  type MenuEvent = 'logout' | 'doc' | 'lock' | 'changePassword';
 
   export default defineComponent({
     name: 'UserDropdown',
@@ -74,6 +82,7 @@
       const { t } = useI18n();
       const { getShowDoc, getUseLockPage } = useHeaderSetting();
       const userStore = useUserStore();
+      const go = useGo();
 
       const getUserInfo = computed(() => {
         const { nickname: realName, avatar } = userStore.getUserInfo || {};
@@ -96,6 +105,10 @@
         openWindow(DOC_URL);
       }
 
+      function handleChangePassword() {
+        go(PageEnum.CHANGE_PASSWORD);
+      }
+
       function handleMenuClick(e: MenuInfo) {
         switch (e.key as MenuEvent) {
           case 'logout':
@@ -106,6 +119,9 @@
             break;
           case 'lock':
             handleLock();
+            break;
+          case 'changePassword':
+            handleChangePassword();
             break;
         }
       }
