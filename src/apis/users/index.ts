@@ -30,15 +30,18 @@ export function listUserDepartmentIds(id: string) {
 }
 
 export function setUserDepartmentIds(id: string, departmentIds: string[]) {
-  return defHttp.put<null>({ url: `${domain}/${id}/department-ids`, data: departmentIds });
+  return defHttp.put<null>({
+    url: `${domain}/${id}/department-ids`,
+    data: { data: departmentIds },
+  });
 }
 
 export function listUserRoleIds(id: string) {
   return defHttp.get<string[]>({ url: `${domain}/${id}/role-ids` });
 }
 
-export function setUserRoleIds(id: string, roleIds: string[]) {
-  return defHttp.put<null>({ url: `${domain}/${id}/role-ids`, data: roleIds });
+export function setUserRoleIds(id: string, roleIds: string[] = []) {
+  return defHttp.put<null>({ url: `${domain}/${id}/role-ids`, data: { data: roleIds } });
 }
 
 export { UserEntity };

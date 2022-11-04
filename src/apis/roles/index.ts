@@ -30,7 +30,10 @@ export function listRolePermissionIds(id: string) {
 }
 
 export function setRolePermissionIds(id: string, permissionIds: string[]) {
-  return defHttp.put<null>({ url: `${domain}/${id}/permission-ids`, data: permissionIds });
+  return defHttp.put<null>({
+    url: `${domain}/${id}/permission-ids`,
+    data: { data: permissionIds },
+  });
 }
 
 export { RoleEntity };
