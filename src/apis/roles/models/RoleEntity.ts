@@ -11,6 +11,9 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+
+import { YesNo } from '/@/enums';
+
 /**
  * 角色数据实体
  * @export
@@ -41,4 +44,10 @@ export interface RoleEntity {
    * @memberof RoleEntity
    */
   description?: string;
+  /**
+   * 是否系统
+   * @type {YesNo}
+   * @memberof RoleEntity
+   */
+  isSystem: YesNo;
 }

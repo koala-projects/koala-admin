@@ -6,14 +6,14 @@
   import { useModal } from '/@/components/Modal';
   import { useDrawer } from '/@/components/Drawer';
 
+  import { YesNo } from '/@/enums';
+  import { listUsers, deleteUser } from '/@/apis/users';
+
   import DepartmentTree from './DepartmentTree.vue';
   import UserModal from './UserModal.vue';
   import UserDepartmentDrawer from './UserDepartmentDrawer.vue';
   import UserRoleDrawer from './UserRoleDrawer.vue';
-
   import { columns, searchFormSchema } from './user.data';
-
-  import { listUsers, deleteUser } from '/@/apis/users';
 
   const departmentId = ref<Nullable<string>>(null);
 
@@ -94,22 +94,26 @@
               {
                 icon: 'clarity:note-edit-line',
                 tooltip: '编辑',
+                ifShow: record.isSystem === YesNo.NO,
                 onClick: handleEdit.bind(null, record),
               },
               {
                 icon: 'mingcute:department-line',
                 tooltip: '部门配置',
+                ifShow: record.isSystem === YesNo.NO,
                 onClick: handleDepartmentSetting.bind(null, record),
               },
               {
                 icon: 'eos-icons:role-binding-outlined',
                 tooltip: '角色配置',
+                ifShow: record.isSystem === YesNo.NO,
                 onClick: handleRoleSetting.bind(null, record),
               },
               {
                 icon: 'ant-design:delete-outlined',
                 color: 'error',
                 tooltip: '删除',
+                ifShow: record.isSystem === YesNo.NO,
                 popConfirm: {
                   title: '是否确认删除',
                   placement: 'left',
